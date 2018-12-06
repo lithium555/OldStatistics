@@ -12,7 +12,7 @@ import (
 func main(){
 	var conn *grpc.ClientConn
 
-	conn, err := grpc.Dial(":7777", grpc.WithInsecure())
+	conn, err := grpc.Dial("127.0.0.1:8085", grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil{
 		log.Fatalf("did not connect: %s", err)
 	}
@@ -24,7 +24,8 @@ func main(){
 	for i := 1; i < 1000; i++ {
 		wg.Add(1)
 		go func(index int, wg *sync.WaitGroup) {
-			response, err := c.GetStatistics(context.Background(), &api.TaskMessage{Date: time.Now().Format("2006-01-02")})
+			ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+			response, err := c.GetStatistics(ctx, &api.TaskMessage{Date: time.Now().Format("2006-01-02"), Revenue: int32(i)}, grpc.FailFast(false))
 			if err != nil{
 				log.Fatalf("Error, when we calling function GetStatistics: '%v'", err)
 			}
@@ -36,9 +37,10 @@ func main(){
 			log.Printf("response.Date = '%v'\n", response.Date)
 			log.Printf("response.Time = '%v'\n", response.Time)
 			log.Println("---------------------------------------------------------------")
-
+			cancel()
 			defer wg.Done()
 		}(i, wg)
 	}
 	wg.Wait()
+	conn.Close()
 }
