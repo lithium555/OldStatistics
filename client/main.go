@@ -50,16 +50,6 @@ func main(){
 
 			key := w.String()
 			fmt.Printf("response = '%v'\n", key)
-
-
-			//log.Println("---------------------------------------------------------------")
-			//log.Println("Response from the server: ")
-			//log.Printf("response.Revenue = '%v'\n", response.Revenue)
-			//log.Printf("response.PartnerId = '%v'\n", response.PartnerId)
-			//log.Printf("response.EventId = '%v'\n", response.EventId)
-			//log.Printf("response.Date = '%v'\n", response.Date)
-			//log.Printf("response.Time = '%v'\n", response.Time)
-			//log.Println("---------------------------------------------------------------")
 			//cancel()
 			defer wg.Done()
 		}(i, wg)
