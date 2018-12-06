@@ -2,6 +2,8 @@ package main
 
 import (
 	"OldStatisticms/api"
+	"bytes"
+	"fmt"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"log"
@@ -34,14 +36,30 @@ func main(){
 			if err != nil{
 				log.Fatalf("Error, when we calling function GetStatistics: '%v'", err)
 			}
-			log.Println("---------------------------------------------------------------")
-			log.Println("Response from the server: ")
-			log.Printf("response.Revenue = '%v'\n", response.Revenue)
-			log.Printf("response.PartnerId = '%v'\n", response.PartnerId)
-			log.Printf("response.EventId = '%v'\n", response.EventId)
-			log.Printf("response.Date = '%v'\n", response.Date)
-			log.Printf("response.Time = '%v'\n", response.Time)
-			log.Println("---------------------------------------------------------------")
+
+			buf := make([]byte, 0, 1024)
+			w := bytes.NewBuffer(buf)
+			w.WriteString("---------------------------------------------------------------\n")
+			w.WriteString("Response from the server: ")
+			w.WriteString(fmt.Sprintf("response.Revenue = '%v'\n", response.Revenue))
+			w.WriteString(fmt.Sprintf("response.PartnerId = '%v'\n", response.PartnerId))
+			w.WriteString(fmt.Sprintf("response.EventId = '%v'\n", response.EventId))
+			w.WriteString(fmt.Sprintf("response.Date = '%v'\n", response.Date))
+			w.WriteString(fmt.Sprintf("response.Time = '%v'\n", response.Time))
+			w.WriteString("---------------------------------------------------------------------------\n")
+
+			key := w.String()
+			fmt.Printf("response = '%v'\n", key)
+
+
+			//log.Println("---------------------------------------------------------------")
+			//log.Println("Response from the server: ")
+			//log.Printf("response.Revenue = '%v'\n", response.Revenue)
+			//log.Printf("response.PartnerId = '%v'\n", response.PartnerId)
+			//log.Printf("response.EventId = '%v'\n", response.EventId)
+			//log.Printf("response.Date = '%v'\n", response.Date)
+			//log.Printf("response.Time = '%v'\n", response.Time)
+			//log.Println("---------------------------------------------------------------")
 			//cancel()
 			defer wg.Done()
 		}(i, wg)
