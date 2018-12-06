@@ -2,7 +2,6 @@ package main
 
 import (
 	"OldStatisticms/api"
-	"fmt"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"log"
@@ -22,16 +21,16 @@ func main(){
 	for i := 1; i < 1000; i++ {
 		wg.Add(1)
 		go func(index int, wg *sync.WaitGroup) {
-			ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
-			defer cancel()
-			select {
-			case <-time.After(1 * time.Second):
-				fmt.Println("overslept")
-			case <-ctx.Done():
-				fmt.Println(ctx.Err()) // prints "context deadline exceeded"
-			}
+			//ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
+			//defer cancel()
+			//select {
+			//case <-time.After(1 * time.Second):
+			//	fmt.Println("overslept")
+			//case <-ctx.Done():
+			//	fmt.Println(ctx.Err()) // prints "context deadline exceeded"
+			//}
 
-			response, err := c.GetStatistics(ctx, &api.TaskMessage{Date: time.Now().Format("2006-01-02"), Revenue: int32(i)}, grpc.FailFast(false))
+			response, err := c.GetStatistics(context.Background(), &api.TaskMessage{Date: time.Now().Format("2006-01-02"), Revenue: int32(i)}, grpc.FailFast(false))
 			if err != nil{
 				log.Fatalf("Error, when we calling function GetStatistics: '%v'", err)
 			}
@@ -43,7 +42,7 @@ func main(){
 			log.Printf("response.Date = '%v'\n", response.Date)
 			log.Printf("response.Time = '%v'\n", response.Time)
 			log.Println("---------------------------------------------------------------")
-			cancel()
+			//cancel()
 			defer wg.Done()
 		}(i, wg)
 	}
