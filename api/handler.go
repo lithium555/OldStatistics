@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"golang.org/x/net/context"
 	"log"
 	"math/rand"
@@ -15,6 +16,7 @@ func (s *StructgRPC) GetStatistics(ctx context.Context, data *TaskMessage)(*Task
 	log.Println("function GetStatistics receive message")
 	currentTime := time.Now()
 	v := data.Revenue
+	fmt.Printf("revenue:= '%v'\n",v)
 	v = v + 1
 
 	return &TaskMessage{

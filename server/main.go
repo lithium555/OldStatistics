@@ -41,6 +41,15 @@ func main(){
 
 func handleConnection(conn net.Conn, counter int){
 	defer conn.Close()
-	fmt.Println("we get a connection")
-	counter++
+	//for{
+		fmt.Println("we get a connection")
+		counter++
+		//input := make([]byte, (1024*4))
+		//data, err := conn.Read(input)
+		//if err != nil{
+		//	fmt.Println("Read error:", err)
+		//	break
+		//}
+		//fmt.Printf("data = '%v'\n", data)
+	//}
 }

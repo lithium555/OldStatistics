@@ -6,10 +6,11 @@ message TaskMessage{
     string time = 2;
     int64 event_id  = 3;//(impression/click)
     int64 partner_id = 4;
-    int64 revenue = 5;// (int)
+    int32 revenue = 5;// (int)
 }
 
 service Statistics{
     rpc GetStatistics(TaskMessage) returns (TaskMessage){}
 }
 
+// protoc --go_out=plugins=grpc:.  data.proto
