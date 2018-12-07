@@ -32,7 +32,7 @@ func main(){
 			//	fmt.Println(ctx.Err()) // prints "context deadline exceeded"
 			//}
 
-			response, err := c.GetStatistics(context.Background(), &api.TaskMessage{Date: time.Now().Format("2006-01-02"), Revenue: int32(i)}, grpc.FailFast(false))
+			response, err := c.GetStatistics(context.Background(), &api.TaskMessage{Date: time.Now().Format("2006-01-02"),  PartnerId:int64(i)}, grpc.FailFast(false))
 			if err != nil{
 				log.Fatalf("Error, when we calling function GetStatistics: '%v'", err)
 			}

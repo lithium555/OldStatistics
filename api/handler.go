@@ -10,20 +10,21 @@ import (
 
 // StructgRPC represents the gRPC server
 type StructgRPC struct {
+	counter int
 }
 
 func (s *StructgRPC) GetStatistics(ctx context.Context, data *TaskMessage)(*TaskMessage, error){
-	log.Println("function GetStatistics receive message")
+	log.Println("function GetStatistics received message")
 	currentTime := time.Now()
-	v := data.Revenue
-	fmt.Printf("revenue:= '%v'\n",v)
-	v = v + 1
+	s.counter++
+	fmt.Printf("s.counter:= '%v'\n",s.counter)
+
 
 	return &TaskMessage{
 		Date: time.Now().Format("2006-01-02"),
 		Time: currentTime.Format(time.RFC3339),
 		EventId: rand.Int63(),
-		PartnerId: rand.Int63(),
-		Revenue: v,
+		PartnerId: data.PartnerId,
+		Revenue: int32(s.counter),
 	}, nil
 }

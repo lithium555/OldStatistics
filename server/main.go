@@ -34,22 +34,22 @@ func main(){
 			conn.Close()
 			continue
 		}
-		go handleConnection(conn, counter)  // запускаем горутину для обработки запроса
+		go handleConnection(conn, counter)
 	}
-	fmt.Printf("++++++++++++++++++++++++++++++++++++counter = '%v'\n", counter)
 }
 
 func handleConnection(conn net.Conn, counter int){
 	defer conn.Close()
-	//for{
-		fmt.Println("we get a connection")
+	for{
+		input := make([]byte, (1024*4))
+		data, err := conn.Read(input)
+		if err != nil{
+			fmt.Println("Read error:", err)
+			break
+		}
+		fmt.Printf("data = '%v'\n", data)
+		fmt.Println("We get a connection")
 		counter++
-		//input := make([]byte, (1024*4))
-		//data, err := conn.Read(input)
-		//if err != nil{
-		//	fmt.Println("Read error:", err)
-		//	break
-		//}
-		//fmt.Printf("data = '%v'\n", data)
-	//}
+		fmt.Printf("Counter ov Evets: '%v'\n", counter)
+	}
 }
